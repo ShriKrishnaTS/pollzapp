@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <!-- <link rel="stylesheet" type="text/css" href="assesment2.css"> -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
+  <style>
+
+
+  </style>
+</head>
+<body>
+<body>
+<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="/">Pollzapp</a>
+    </div>
+    <ul class="nav navbar-nav">
+     <li><a href="view_groups">Groups</a></li>
+      <li class="active"><a href="view_polls">Polls</a></li>
+      <li><a href="view_users">Users</a></li></ul>
+  </div>
+</nav>
+<div class="container">
+  <table class="table table-hover table-striped table-bordered">
+
+    <thead>
+    <tr>
+      <th> Poll Title</th>
+      <th> Poll Question</th>
+      <th> Created at</th>
+      <th> Ends On</th>
+
+    </tr>
+
+    </thead>
+    <tbody>
+    <% @polls.each do |poll| %>
+        <tr>
+          <td> <%= poll.title %> </td>
+          <td> <%= poll.question %> </td>
+          <td> <%= poll.created_at %> </td>
+          <td> <%= poll.ends_on %> </td>
+
+        </tr>
+    <% end %>
+    </tbody>
+  </table>
+</div>
+
+
+</table>
+<div class="col-md-12 text-center">
+  <ul class="pagination pagination-lg pager" id="myPager">
+    <%= will_paginate @polls, :container => true %></ul>
+</div>
+
+</div>
+</body>
+</html>
+

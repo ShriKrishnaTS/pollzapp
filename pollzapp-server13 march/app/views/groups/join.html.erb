@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<head>
+   <style>
+
+      h1,h2,h3,h4,h5,h6,.w3-slim,.w3-wide{font-family:"Segoe UI",Arial,sans-serif}
+      .w3-serif{font-family:"Times New Roman",Times,serif}
+
+      hr{border:0;border-top:1px solid #eee;margin:20px 0}
+
+      .pl_header{padding:0.01em 16px}
+
+
+      .button {
+          background-color: #4CAF50; /* Green */
+          border: none;
+          color: white;
+          padding: 12px 32px;
+          text-align: center;
+          text-decoration: none;
+          display: inline-block;
+          font-size: 16px;
+          margin: 4px 2px;
+          cursor: pointer;
+          border-radius: 4px; }
+
+     </style>
+</head>
+<body>
+   <div class="pl_header" style="background-color: #2350be; color: #FFFFFF">
+      <h1>pollzapp</h1>      
+ </div>
+ <div style="text-align: center;">
+      <img src="appicon.png">
+
+<h2>   <%= @group.name %>  </h2>
+
+      <h2>pollzapp Group Invite</h2>
+      <a class="button" href="http://android.pollzapp.com/group/share_id" style="text-align: center;">Join Group</a>
+ <hr style="margin-top: 60px">
+ <div style="margin-top: 40px">
+     Don't have pollzapp yet?<br><a href="https://play.google.com/store/apps/details?id=com.whatsapp">Download</a>
+</div>
+ </div>
+
+
+</body>
+</html>

@@ -1,0 +1,109 @@
+<div class="box">
+  <div class="box-header">
+    <h3 class="box-title">Pollz List</h3>
+    <p>Deleted</p>
+  </div><!-- /.box-header -->
+  <div class="box-body table-responsive">
+    <table class="table table-bordered table-hover data-table">
+      <thead>
+      <tr>
+        <th>ID</th>
+        <th style="width: 25%">Title</th>
+        <th style="width: 25%">Question</th>
+        <th>Media</th>
+        <th>Group</th>
+
+        <th>Status</th>
+        <th>Actions</th>
+      </tr>
+      </thead>
+      <tbody>
+      <% @allPolls.each do |poll| %>
+          <% if poll.deleted || poll.group.deleted %>
+              <tr>
+                <td><%= poll.id %></td>
+                <td><%= poll.title %></td>
+                <td><%= poll.question %></td>
+                <% if poll.composite.url %>
+                    <td><img width="100%" src="<%= poll.composite.url %>" alt="File not found"></td>
+                <% elsif poll.video.url %>
+                    <td><video width="100%" controls>
+                      <source src="<%= poll.video.url %>" type="video/mp4">
+                      Your browser does not support HTML5 video.
+                    </video></td>
+                <% else %>
+                    <td><h4>No Media</h4></td>
+                <% end %>
+                <td><%= poll.group.name %></td>
+
+                <td><%= poll.end_msg_sent? ? "Ended" : "Running" %>
+                  <% if poll.media_disabled %> | Media Disabled<% end %>
+                  <% if poll.deleted %> | Deleted <% end %>
+                </td>
+                <% if poll.group.deleted %>
+                    <td>
+                      <h4>Group Deleted</h4>
+                    </td>
+                <% else %>
+                    <td>
+                      <div class="btn-group">
+                        <button type="button" class="btn btn-info">Action</button>
+                        <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown">
+                          <span class="caret"></span>
+                          <span class="sr-only">Toggle Dropdown</span>
+                        </button>
+                        <ul class="dropdown-menu" role="menu">
+
+                          <li>
+
+                            <% if poll.media_disabled %>
+                                <form id="enable-disable-poll-media-<%= poll.id %>" action="<%= request.base_url %>/list_polls/<%= poll.id %>" method="post">
+                                  <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+                                  <input type="hidden" name="_method" value="PATCH">
+                                  <input type="hidden" name="media_disabled" value="0">
+                                </form>
+                                <button class="btn btn-link" onclick="if(confirm('are you sure want to enable media for this poll?')) $('#enable-disable-poll-media-<%= poll.id %>').submit() else return false;">Enable
+                                  Media
+                                </button>
+                            <% else %>
+                                <form id="enable-disable-poll-media-<%= poll.id %>" action="<%= request.base_url %>/list_polls/<%= poll.id %>" method="post">
+                                  <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+                                  <input type="hidden" name="_method" value="PATCH">
+                                  <input type="hidden" name="media_disabled" value="1">
+                                </form>
+                                <button class="btn btn-link" onclick="if(confirm('are you sure want to disable media for this poll?')) $('#enable-disable-poll-media-<%= poll.id %>').submit(); else return false;">Disable
+                                  Media
+                                </button>
+                            <% end %>
+                          </li>
+                          <li>
+                            <form id="restore-poll-<%= poll.id %>" action="<%= request.base_url %>/list_polls/restore" method="post">
+                              <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+                              <input type="hidden" name="id" value="<%= poll.id %>">
+                            </form>
+                            <button class="btn btn-link" onclick="if(confirm('Are you sure want to restore this poll?')) $('#restore-poll-<%= poll.id %>').submit(); else return false;">Restore</button>
+
+                          </li>
+                        </ul>
+                      </div>
+                    </td>
+                <% end %>
+              </tr>
+          <% end %>
+      <% end %>
+
+      </tbody>
+      <tfoot>
+      <tr>
+        <th>ID</th>
+        <th>Title</th>
+        <th>Question</th>
+        <th>Media</th>
+        <th>Group</th>
+        <th>User</th>
+        <th>Actions</th>
+      </tr>
+      </tfoot>
+    </table>
+  </div><!-- /.box-body -->
+</div><!-- /.box -->

@@ -1,0 +1,112 @@
+doctype html
+html lang="en"
+  head
+    meta charset="utf-8"
+    meta http-equiv="X-UA-Compatible" content="IE=edge"
+    title
+      | Admin | #{ yield(:title) || 'Untitled' }
+    meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport"
+    = stylesheet_link_tag :admin
+    = csrf_meta_tags
+  body.skin-blue.sidebar-mini
+    .wrapper
+      header.main-header
+        a.logo href="#"
+          span.logo-mini
+            b D
+            | A
+          span.logo-lg
+            b DirkDaDhobi
+            | Admin
+        nav.navbar.navbar-static-top role="navigation"
+          a.sidebar-toggle href="#" data-toggle="offcanvas" role="button"
+            span.sr-only Toggle navigation
+          .navbar-custom-menu
+            ul.nav.navbar-nav
+              li= link_to 'Logout', :destroy_user_session, method: :delete
+      aside.main-sidebar
+        section.sidebar
+          .user-panel
+            .pull-left.image
+              img.img-circle src="#{ image_path('avatar.png') }" alt="User Image"
+            .pull-left.info
+              p= current_user.name
+              a href="#"
+                i.fa.fa-circle.text-success Online
+          ul.sidebar-menu
+            li.header Sections
+            li class="#{active_class admin_root_url}"
+              a href="#{ admin_root_path }"
+                i.fa.fa-dashboard
+                span Dashboard
+            li class="#{active_class admin_orders_url}"
+              a href="#{ admin_orders_path }"
+                i.fa.fa-shopping-cart
+                span Orders
+            li class="#{active_class admin_categories_url}"
+              a href="#{ admin_categories_path }"
+                i.fa.fa-tags
+                span Categories
+            li class="#{active_class admin_products_url}"
+              a href="#{ admin_products_path }"
+                i.fa.fa-suitcase
+                span Products
+            li class="#{active_class admin_subscription_packages_url}"
+              a href="#{ admin_subscription_packages_path }"
+                i.fa.fa-users
+                span Subscription Packages
+            li class="#{active_class admin_discount_coupons_url}"
+              a href="#{ admin_discount_coupons_path }"
+                i.fa.fa-users
+                span Discount Coupons
+            li class="#{active_class admin_pages_url}"
+              a href="#{ admin_pages_path }"
+                i.fa.fa-edit
+                span Pages
+            li class="#{active_class admin_articles_url}"
+              a href="#{ admin_articles_path }"
+                i.fa.fa-edit
+                span News
+            li class="#{active_class admin_home_editables_edit_url}"
+              a href="#{ admin_home_edits_path }"
+                i.fa.fa-edit
+                span Edit Home Page
+            li class="#{active_class admin_videos_url}"
+              a href="#{ admin_videos_path }"
+                i.fa.fa-youtube
+                span Videos
+            li class="#{active_class admin_post_attachments_url}"
+              a href="#{ admin_post_attachments_path }"
+                i.fa.fa-users
+                span Sliders
+            li class="#{active_class admin_users_url}"
+              a href="#{ admin_users_path }"
+                i.fa.fa-users
+                span Users
+            li class="#{active_class admin_testimonials_url}"
+              a href="#{ admin_testimonials_path }"
+                i.fa.fa-users
+                span Testimonials
+      .content-wrapper
+        section.content-header
+          h1
+            = yield :title
+            small= yield :page_description
+  = render_crumbs format: :html_list, microdata: true, ul_class: 'breadcrumb'
+  section.content
+    = flash_messages
+    .box.box-default
+      - if content_for? :panel_heading
+        .box-header.with-border
+          .box-title= yield :panel_heading
+      .box-body= yield
+  footer.main-footer
+    .pull-right.hidden-xs
+      |Developed by&nbsp;
+      a target="_blank" href="http://netvinyas.com" Netvinyas
+    strong
+      | Copyright © 2015&nbsp;
+      a href="http://dirkdadhobi.com" target="_blank" Dirk Da Dhobi
+      | .
+    |  All rights reserved.
+  = javascript_include_tag :admin

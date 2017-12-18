@@ -1,0 +1,337 @@
+<head>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+</head>
+<section class="content">
+
+  <div class="row">
+    <div class="col-md-12">
+      <div class="box box-default">
+        <div class="box-header with-border">
+          <div class="box-title"><h3 class="text-underline"><%= @group.name %></h3></div>
+        </div>
+        <!--<div class="box-body">Group Details:</div>-->
+      </div>
+    </div>
+    <div class="col-md-12">
+      <div class="box">
+        <div class="box-header">
+          <h3 class="box-title">Group Users</h3>
+        </div><!-- /.box-header -->
+        <div class="box-body table-responsive">
+          <table class="table table-bordered table-hover data-table">
+            <thead>
+            <tr>
+              <th>ID</th>
+              <th>Name</th>
+              <th>@Username</th>
+              <th>Number</th>
+              <th>Role</th>
+              <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            <% @group.group_users.each do |user| %>
+                <% if @group.id !=1 %>
+                <% if user.user.disabled==false %>
+                    <tr>
+                      <td><%= user.user.id %></td>
+                      <td><%= user.user.name %></td>
+                      <td><%= user.user.username %></td>
+                      <td><%= user.user.phone %></td>
+                      <td><%= user.user_type %></td>
+ 
+                      <td>
+                        <% if user.user_type !="Group Owner" %>
+                            <div class="btn-group">
+                              <button type="button" class="btn btn-info">Action</button>
+                              <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown">
+                                <span class="caret"></span>
+                                <span class="sr-only">Toggle Dropdown</span>
+                              </button>
+                              <ul class="dropdown-menu" role="menu">
+                                <% if user.user_type =="Group Admin" %>
+                                    <li>
+                                      <form id="revoke-admin-role-<%= user.id %>" action="<%= request.base_url %>/list_groups/<%= @group.id %>" method="post">
+                                        <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+                                        <input type="hidden" name="_method" value="PATCH">
+                                        <input type="hidden" name="revoke_admin" value="<%= user.id %>">
+                                      </form>
+                                      <button class="btn btn-link" onclick="if(confirm('Are you sure?')){$('#revoke-admin-role-<%= user.id %>').submit();} else return false;">Revoke
+                                        Admin Role
+                                      </button>
+                                    </li>
+                                    <li>
+                                      <form id="make-owner-<%= user.id %>" action="<%= request.base_url %>/list_groups/<%= @group.id %>" method="post">
+                                        <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+                                        <input type="hidden" name="_method" value="PATCH">
+                                        <input type="hidden" name="make_owner" value="<%= user.id %>">
+                                      </form>
+                                      <button class="btn btn-link" onclick="if(confirm('Are you sure?')){$('#make-owner-<%= user.id %>').submit();} else return false;">Make
+                                        Owner
+                                      </button>
+                                    </li>
+
+                                <% elsif user.user_type =="Member" %>
+                                    <li>
+                                      <form id="make-owner-<%= user.id %>" action="<%= request.base_url %>/list_groups/<%= @group.id %>" method="post">
+                                        <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+                                        <input type="hidden" name="_method" value="PATCH">
+                                        <input type="hidden" name="make_owner" value="<%= user.id %>">
+                                      </form>
+                                      <button class="btn btn-link" onclick="if(confirm('Are you sure?')){$('#make-owner-<%= user.id %>').submit();} else return false;">Make
+                                        Owner
+                                      </button>
+
+                                    </li>
+                                    <li>
+                                      <form id="make-admin-<%= user.id %>" action="<%= request.base_url %>/list_groups/<%= @group.id %>" method="post">
+                                        <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+                                        <input type="hidden" name="_method" value="PATCH">
+                                        <input type="hidden" name="make_admin" value="<%= user.id %>">
+                                      </form>
+                                      <button class="btn btn-link" onclick="if(confirm('Are you sure?')){$('#make-admin-<%= user.id %>').submit();} else return false;">Make
+                                        Admin
+                                      </button>
+
+                                    </li>
+                                <% end %>
+                                <% end %>
+                              </ul>
+                        <% else %>
+                            <h5>Change Owner for actions</h5>
+                        <% end %>
+
+                        </div>
+                      </td>
+                    </tr>
+                <% end %>
+            <% end %>
+
+            </tbody>
+            <tfoot>
+            <tr>
+              <th>ID</th>
+              <th>Name</th>
+              <th>@Username</th>
+              <th>Number</th>
+              <th>Role</th>
+              <th>Actions</th>
+            </tr>
+            </tfoot>
+          </table>
+        </div><!-- /.box-body -->
+      </div><!-- /.box -->
+    </div>
+
+   
+    <div class="col-md-12">
+      <div class="box">
+        <div class="box-header">
+          <h3 class="box-title">Group Pollz</h3>
+        </div><!-- /.box-header -->
+        <div class="box-body table-responsive">
+          <table class="table table-bordered table-hover data-table">
+            <thead>
+            <tr>
+              <th>ID</th>
+              <th style="width: 25%">Title</th>
+              <th style="width: 25%">Question</th>
+              <th>Posted By</th>
+              <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            <% @group.polls.each do |poll| %>
+                <tr>
+                  <td><%= poll.id %></td>
+                  <td><%= poll.title %></td>
+                  <td><%= poll.question %></td>
+                  <td><%= poll.end_msg_sent? ? "Ended" : "Running" %>
+                    <% if poll.media_disabled %> | Media Disabled<% end %>
+                    <% if poll.deleted %> | Deleted <% end %>
+                  </td>
+                  <td>
+                    <% if @group.deleted %>
+                        <h4> Not Available</h4>
+                    <% else %>
+                        <div class="btn-group">
+                          <button type="button" class="btn btn-info">Action</button>
+                          <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown">
+                            <span class="caret"></span>
+                            <span class="sr-only">Toggle Dropdown</span>
+                          </button>
+                          <ul class="dropdown-menu" role="menu">
+
+                            <li>
+
+                              <% if poll.media_disabled %>
+                                  <form id="enable-disable-poll-media-<%= poll.id %>" action="<%= request.base_url %>/list_polls/<%= poll.id %>" method="post">
+                                    <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+                                    <input type="hidden" name="_method" value="PATCH">
+                                    <input type="hidden" name="media_disabled" value="0">
+                                  </form>
+                                  <button class="btn btn-link" onclick="if(confirm('are you sure want to enable media for this poll?')){ $('#enable-disable-poll-media-<%= poll.id %>').submit();} return false;">Enable
+                                  </button>
+                              <% else %>
+                                  <form id="enable-disable-poll-media-<%= poll.id %>" action="<%= request.base_url %>/list_polls/<%= poll.id %>" method="post">
+                                    <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+                                    <input type="hidden" name="_method" value="PATCH">
+                                    <input type="hidden" name="media_disabled" value="1">
+                                  </form>
+                                  <button class="btn btn-link" onclick="if(confirm('are you sure want to disable media for this poll?')) {$('#enable-disable-poll-media-<%= poll.id %>').submit();}  return false;">Disable
+                                    Media
+                                  </button>
+                              <% end %>
+                            </li>
+                            <li>
+                              <% if poll.deleted %>
+                                  <form id="restore-poll-<%= poll.id %>" action="<%= request.base_url %>/list_polls/restore" method="post">
+                                    <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+                                    <input type="hidden" name="id" value="<%= poll.id %>">
+                                  </form>
+                                  <button class="btn btn-link" onclick="if(confirm('Are you sure want to restore this poll?')) {$('#restore-poll-<%= poll.id %>').submit();}  return false;">Restore</button>
+                              <% else %>
+                                  <form id="delete-poll-<%= poll.id %>" action="<%= request.base_url %>/list_polls/<%= poll.id %>" method="post">
+                                    <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+                                    <input type="hidden" name="_method" value="PATCH">
+                                    <input type="hidden" name="deleted" value="1">
+                                  </form>
+                                  <button class="btn btn-link" onclick="if(confirm('are you sure want to delete this poll?')) {console.log('deleting');$('#delete-poll-<%= poll.id %>').submit();} else return false;">Delete
+                                    poll
+                                  </button>
+                              <% end %>
+
+                            </li>
+                          </ul>
+                        </div>
+                    <% end %>
+
+                  </td>
+                </tr>
+            <% end %>
+
+            </tbody>
+            <tfoot>
+            <tr>
+              <th>ID</th>
+              <th style="width: 25%">Title</th>
+              <th style="width: 25%">Question</th>
+              <th>Posted By</th>
+              <th>Actions</th>
+            </tr>
+            </tfoot>
+          </table>
+        </div><!-- /.box-body -->
+      </div><!-- /.box -->
+    </div>
+
+
+ <% if @group.id == 1 %>
+       <div class="col-md-12">
+      <div class="box">
+        <div class="box-header">
+          <h3 class="box-title">Create Pollz</h3>
+        </div><!-- /.box-header -->
+        <div class="box-body table-responsive">
+             <!--  <form action="1" method="post">
+  Poll Title:<br>
+  <input type="text" name="title" value="">
+  <input type="hidden" name="group_id" value="1">
+  <br>
+  Poll Description:<br>
+  <input type="text" name="question" value="">
+  <br>
+  Poll duration:<br>
+  <input type="number" name="duration" value=""><br>
+  Poll Image1 :<br>
+  <input type="file" name="image_1" value=""><br>
+  Poll Image2 :<br>
+  <input type="file" name="image_2" value=""><br>
+   Poll Video :<br>
+  <input type="file" name="video" value=""><br>
+  <!--  Comments :<br>
+ <input type="radio" name="gender" value="male" checked> On<br>
+  <input type="radio" name="gender" value="female"> Off<br>
+  <input type="checkbox" name="comments_enabled" checked> Enable Comments
+  <div class="options">
+ Option1:<br>
+  <input type="text" class="reqOpts" name="option_1" value="Yes">
+  <br>
+  Option2:<br>
+  <input type="text" class="reqOpts"  name="option_2" value="No">
+  <br>
+  </div>
+  <input type="submit" value="Submit" >
+
+</form>  --> 
+              <form action="1" method="post"  multipart = 'true' enctype="multipart/form-data">
+
+<div class="form-group row">
+  <label for="example-text-input" class="col-2 col-form-label"> Poll Title:</label>
+  <div class="col-10">
+    <input class="form-control" type="text" value="" name="title" maxlength="20" required id="example-text-input">
+  </div>
+</div>
+<div class="form-group row">
+  <label for="example-search-input" class="col-2 col-form-label">Poll Question:</label>
+  <div class="col-10">
+    <input class="form-control" type="text" value="" name="question" maxlength="140" required id="example-search-input">
+  </div>
+</div>
+<div class="form-group row">
+  <label for="example-email-input" class="col-2 col-form-label">Poll Duration (Hours):</label>
+  <div class="col-10">
+    <input class="form-control" type="number" name="duration" min="0" max="96" required id="example-email-input">
+  </div>
+</div>
+<div class="form-group row">
+  <label for="example-url-input" class="col-2 col-form-label">Poll Image1 :</label>
+  <div class="col-10">
+    <input class="form-control" type="file" name="image_1" >
+  </div>
+</div>
+  <input type="hidden" name="group_id" value="1">
+
+<div class="form-group row">
+  <label for="example-tel-input" class="col-2 col-form-label">Poll Image2 :</label>
+  <div class="col-10">
+<input type="file" name="image_2" value=""   >
+
+  </div>
+</div>
+<div class="form-group row">
+  <label for="example-password-input" class="col-2 col-form-label">Poll Video :</label>
+  <div class="col-10">
+<input type="file" name="video" value="" accept=".mp4, .mov">
+
+  </div>
+</div>
+<div class="form-group row">
+  <label for="example-number-input" class="col-2 col-form-label" value="Yes">Option 1</label>
+  <div class="col-10">
+    <input class="form-control"value="Yes" type="text" name="option_1" maxlength="16" required id="example-number-input">
+  </div>
+</div>
+<div class="form-group row">
+  <label for="example-datetime-local-input" class="col-2 col-form-label" >Option 2</label>
+  <div class="col-10">
+    <input class="form-control"value="No" type="text" name="option_2"  maxlength="16" required id="example-datetime-local-input">
+  </div>
+</div>
+<div class="form-group row">
+  <label for="example-datetime-local-input" class="col-2 col-form-label" >Comments Enabled (Value should be 0 or 1. 0=>disabled, 1=>Enabled)</label>
+  <div class="col-10">
+    <input class="form-control"value="1" type="number" name="comments_enabled" min="0" max="1" required id="example-datetime-local-input"  >
+  </div>
+</div>
+  <input type="submit" value="Submit" >
+</form> 
+
+        </div><!-- /.box-body -->
+      </div><!-- /.box -->
+    </div>
+    <% end %>
+  </div>
+
+</section>
+

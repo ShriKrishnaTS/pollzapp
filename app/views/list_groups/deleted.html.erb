@@ -1,0 +1,46 @@
+<div class="box">
+  <div class="box-header">
+    <h3 class="box-title">Groupz List</h3>
+    <p>Deleted</p>
+  </div><!-- /.box-header -->
+  <div class="box-body table-responsive">
+    <table class="table table-bordered table-hover data-table">
+      <thead>
+      <tr>
+        <th>ID</th>
+        <th>Name</th>
+
+        <th>Share ID</th>
+        <th>Actions</th>
+      </tr>
+      </thead>
+      <tbody>
+      <% @allGroups.each do |group| %>
+          <tr>
+            <td><%= group.id %></td>
+            <td><a href="<%= request.base_url %>/list_groups/<%= group.id %>"><%= group.name %></a></td>
+           
+            <td><%= group.share_id %></td>
+            <td>
+              <form id="restore-group-<%= group.id %>" action="<%= request.base_url %>/list_groups/restore" method="post">
+                <input type="hidden" name="id" value="<%= group.id %>">
+                <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+              </form>
+              <button class="btn btn-success btn-sm" onclick="if(confirm('Are you sure want to restore this group?')) $('#restore-group-<%= group.id %>').submit(); else return false;">Restore</button>
+            </td>
+          </tr>
+      <% end %>
+
+      </tbody>
+      <tfoot>
+      <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Owner</th>
+        <th>Share ID</th>
+        <th>Actions</th>
+      </tr>
+      </tfoot>
+    </table>
+  </div><!-- /.box-body -->
+</div><!-- /.box -->

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <!-- <link rel="stylesheet" type="text/css" href="assesment2.css"> -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
+</head>
+<body>
+<body>
+<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="/">Pollzapp</a>
+    </div>
+    <ul class="nav navbar-nav">
+      <li class="active"><a href="view_groups">Groups</a></li>
+      <li><a href="view_polls">Polls</a></li>
+      <li><a href="view_users">Users</a></li>
+    </ul>
+  </div>
+</nav>
+<div class="container">
+  <table class="table table-hover table-bordered table-striped">
+
+
+    <thead>
+    <tr>
+      <th> Group Name</th>
+      <th> Description</th>
+
+      <th> Created at</th>
+      <th> Last updated</th>
+      <th> Actions</th>
+      
+     
+
+  </thead>
+  <tbody>
+  <% @groups.each do |group| %>
+     <tr>
+        <td> <%= group.name %> </td>
+        <td> <%= group.description %> </td>
+        <td> <%= group.created_at %> </td>
+        <td> <%= group.updated_at %> </td>
+         <td><%= link_to 'Edit', admin_view_groups_path(@admin_view_groups) %> 
+
+        <%= link_to 'Delete', group, method: :delete, data: {:confirm => 'Are you sure?'}, :method => :delete %></td>
+
+       </tr>
+
+    <% end %>
+    </tbody>
+  </table>
+</div>
+</div>
+<div class="col-md-12 text-center">
+     <ul class="digg_pagination">
+      <%= will_paginate @groups, :container => false %>
+ 
+</ul> 
+ </div>
+
+</body>
+</html>

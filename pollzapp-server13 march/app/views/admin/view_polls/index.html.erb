@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <!-- <link rel="stylesheet" type="text/css" href="assesment2.css"> -->
+   <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.10.13/css/jquery.dataTables.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+  <script type="text/javascript" src="https://cdn.datatables.net/1.10.13/js/jquery.dataTables.min.js"></script>
+
+  
+<style type="text/css">
+  #loginCheckLoader{
+    height: 100%;
+    width: 100%;
+    position: fixed;
+    background: #ffffff;
+    left: 0;
+    top: 0;
+    z-index: 9999;
+  }
+   #loginCheckLoader h4{
+    margin-top: 10%;
+    text-align: center;
+   }
+</style>
+
+
+</head>
+<body>
+<div id="loginCheckLoader">
+<h4>please wait...</h4>
+</div>
+<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="/">Pollzapp</a>
+    </div>
+    <ul class="nav navbar-nav">
+     <li><a href="view_groups">Groups</a></li>
+      <li class="active"><a href="view_polls">Polls</a></li>
+      <li><a href="view_users">Users</a></li></ul>
+  </div>
+</nav>
+<div class="container">
+<table id="example" class="display" width="100%"></table>
+</div>
+</div>
+<script type="text/javascript">
+  var base_url="<%= request.base_url %>";
+</script>
+<script type="text/javascript" src="<%= request.base_url %>/js/dashboard.js"></script>
+<script type="text/javascript" src="<%= request.base_url %>/js/polls.js"></script>
+
+<div class="modal fade" id="editorModel" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Edit Group</h4>
+      </div>
+      <div class="modal-body">
+    
+  <div class="form-group">
+    <label for="inputEmail3" class="col-sm-2 control-label">Group Name</label>
+    <div class="col-sm-10">
+      <input type="text" name="name" id="editGroup-name" class="form-control" placeholder="Name">
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="inputEmail3" class="col-sm-2 control-label">Group Description</label>
+    <div class="col-sm-10">
+      <input type="text" class="form-control" id="editGroup-description" name="username" placeholder="Group Descriptioin">
+    </div>
+  </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" onclick="saveGroup();">Save changes</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+</body>
+</html>
+

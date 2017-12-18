@@ -1,0 +1,37 @@
+# SQLite version 3.x
+#   gem install sqlite3
+#
+#   Ensure the SQLite 3 gem is defined in your Gemfile
+#   gem 'sqlite3'
+
+default: &default
+  host: 127.0.0.1
+  adapter: mysql2
+  encoding: utf8
+  database: pollzapp
+  pool: 5
+  username: root
+  password: P@ssw0rd
+  encoding: utf8mb4
+  charset: utf8mb4
+  collation: utf8mb4_unicode_ci
+  socket: /tmp/mysql.sock
+
+
+development:
+  <<: *default
+
+# Warning: The database defined as "test" will be erased and
+# re-generated from your development database when you run "rake".
+# Do not set this db to the same as development or production.
+
+test:
+  <<: *default
+  database: pollzapp_development
+
+staging:
+  <<: *default
+
+production:
+  <<: *default
+  password: b5044af8-bc53-400d-bb97-111a707c67f9

@@ -1,0 +1,23 @@
+<%= render :template => "layouts/login" %>
+
+
+
+<div class="form-box" id="login-box">
+  <div class="header">pollzapp | Sign In</div>
+
+  <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
+      <div class="body bg-gray">
+        <div class="form-group">
+          <input type="text" name="admin[email]" class="form-control" placeholder="User ID"/>
+        </div>
+        <div class="form-group">
+          <input type="password" name="admin[password]" class="form-control" placeholder="Password"/>
+        </div>
+      </div>
+      <div class="footer">
+        <button type="submit" class="btn bg-olive btn-block">Sign me in</button>
+      </div>
+  <% end %>
+</div>
+
+
